@@ -1,0 +1,8 @@
+{
+  "actorSpecification": 1,
+  "name": "commerce-price-monitor",
+  "title": "Commerce Price Monitor",
+  "description": "Crawl public e-commerce pages, extract product data, detect price changes, and save structured results.",
+  "version": "0.1",
+  "input": "./INPUT_SCHEMA.json"
+}
