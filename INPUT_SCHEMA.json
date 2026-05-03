@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "title": "Commerce Price Monitor",
+  "description": "Find public product pages, extract product details, and detect price or availability changes.",
+  "type": "object",
+  "properties": {
+    "start_urls": {
+      "title": "Store or category URLs",
+      "type": "array",
+      "description": "Store home pages, collection pages, category pages, or direct product URLs.",
+      "editor": "schemaBased",
+      "prefill": [
+        {
+          "url": "https://example.com/products/sample-product"
+        }
+      ],
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "title": "URL",
+            "type": "string",
+            "description": "Store, category, collection, or product page URL to start crawling from.",
+            "editor": "textfield",
+            "pattern": "^https?://.+"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "max_pages": {
+      "title": "Max pages",
+      "type": "integer",
+      "description": "Hard limit for pages visited.",
+      "default": 500,
+      "minimum": 1
+    },
+    "max_products": {
+      "title": "Max products",
+      "type": "integer",
+      "description": "Hard limit for product records saved.",
+      "default": 250,
+      "minimum": 1
+    },
+    "max_depth": {
+      "title": "Max crawl depth",
+      "type": "integer",
+      "description": "How many link levels to follow from each start URL.",
+      "default": 4,
+      "minimum": 0
+    },
+    "same_domain_only": {
+      "title": "Same domain only",
+      "type": "boolean",
+      "description": "Only follow links on the same domain as the start URLs.",
+      "default": true
+    },
+    "product_url_patterns": {
+      "title": "Product URL patterns",
+      "type": "array",
+      "description": "URL fragments that usually identify product pages.",
+      "editor": "stringList",
+      "default": [
+        "/products/",
+        "/product/",
+        "/p/",
+        "/item/",
+        "/dp/"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "include_patterns": {
+      "title": "Include URL patterns",
+      "type": "array",
+      "description": "Optional regex patterns URLs must match.",
+      "editor": "stringList",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "exclude_patterns": {
+      "title": "Exclude URL patterns",
+      "type": "array",
+      "description": "Regex patterns to skip.",
+      "editor": "stringList",
+      "default": [
+        "/cart",
+        "/checkout",
+        "/account",
+        "/login",
+        "/logout",
+        "/search",
+        "sort=",
+        "filter="
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "price_selectors": {
+      "title": "Price selectors",
+      "type": "array",
+      "description": "Optional CSS selectors for price text.",
+      "editor": "stringList",
+      "default": [
+        "[itemprop='price']",
+        ".price",
+        ".product-price",
+        "[class*='price']"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "title_selectors": {
+      "title": "Title selectors",
+      "type": "array",
+      "description": "Optional CSS selectors for product title.",
+      "editor": "stringList",
+      "default": [
+        "h1",
+        "[itemprop='name']",
+        ".product-title"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "capture_screenshots": {
+      "title": "Capture screenshots",
+      "type": "boolean",
+      "description": "Save product page screenshots to the key-value store.",
+      "default": true
+    },
+    "detect_changes": {
+      "title": "Detect changes",
+      "type": "boolean",
+      "description": "Compare price, availability, and content hash with the previous run.",
+      "default": true
+    },
+    "snapshot_store_name": {
+      "title": "Snapshot store name",
+      "type": "string",
+      "description": "Key-value store used to remember previous product state.",
+      "editor": "textfield",
+      "default": "commerce-price-monitor-snapshots"
+    },
+    "wait_ms": {
+      "title": "Wait after load",
+      "type": "integer",
+      "description": "Extra wait before extracting product data.",
+      "default": 1000,
+      "minimum": 0
+    }
+  },
+  "required": [
+    "start_urls"
+  ]
+}
