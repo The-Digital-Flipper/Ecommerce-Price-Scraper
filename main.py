@@ -11,6 +11,7 @@ from typing import Any, Iterable
 from urllib.parse import urldefrag, urljoin, urlparse
 
 from apify import Actor
+from apify_client.errors import ApifyApiError
 from playwright.async_api import Page, async_playwright
 
 
@@ -314,7 +315,7 @@ async def main() -> None:
 
         try:
             snapshot_store = await Actor.open_key_value_store(name=snapshot_store_name)
-        except Exception:
+        except ApifyApiError:
             Actor.log.warning(
                 "Could not open named key-value store '%s' (insufficient permissions?); "
                 "falling back to the default store.",
@@ -323,7 +324,7 @@ async def main() -> None:
             snapshot_store = await Actor.open_key_value_store()
         try:
             media_store = await Actor.open_key_value_store(name="commerce-price-monitor-media")
-        except Exception:
+        except ApifyApiError:
             Actor.log.warning(
                 "Could not open named key-value store 'commerce-price-monitor-media' "
                 "(insufficient permissions?); falling back to the default store."
