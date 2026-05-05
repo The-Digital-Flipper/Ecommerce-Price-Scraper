@@ -133,10 +133,28 @@
       }
     },
     "capture_screenshots": {
-      "title": "Capture screenshots",
+      "title": "Capture screenshots (legacy)",
       "type": "boolean",
-      "description": "Save product page screenshots to the key-value store.",
+      "description": "Save product page screenshots to the key-value store. Superseded by takeScreenshots.",
       "default": true
+    },
+    "takeScreenshots": {
+      "title": "Take screenshots",
+      "type": "boolean",
+      "description": "Save product page screenshots to the key-value store. Overrides the legacy capture_screenshots option.",
+      "default": true
+    },
+    "screenshotOnChangeOnly": {
+      "title": "Screenshot on change only",
+      "type": "boolean",
+      "description": "Only capture a screenshot when a price or availability change is detected.",
+      "default": false
+    },
+    "screenshotOnFailure": {
+      "title": "Screenshot on failure",
+      "type": "boolean",
+      "description": "Capture a screenshot when a page scan fails.",
+      "default": false
     },
     "detect_changes": {
       "title": "Detect changes",
@@ -145,11 +163,40 @@
       "default": true
     },
     "snapshot_store_name": {
-      "title": "Snapshot store name",
+      "title": "Snapshot store name (deprecated)",
       "type": "string",
-      "description": "Key-value store used to remember previous product state.",
+      "description": "No longer used. The Actor always uses the default key-value store with prefixed keys.",
       "editor": "textfield",
       "default": "commerce-price-monitor-snapshots"
+    },
+    "timeoutSecs": {
+      "title": "Page timeout (seconds)",
+      "type": "integer",
+      "description": "Maximum time in seconds to wait for a page to load before failing.",
+      "default": 35,
+      "minimum": 5
+    },
+    "maxRetries": {
+      "title": "Max retries per page",
+      "type": "integer",
+      "description": "Number of times to retry a page load on failure, with exponential backoff.",
+      "default": 2,
+      "minimum": 0
+    },
+    "maxConcurrency": {
+      "title": "Max concurrency",
+      "type": "integer",
+      "description": "Maximum number of pages to scan simultaneously.",
+      "default": 1,
+      "minimum": 1,
+      "maximum": 10
+    },
+    "minChangePercent": {
+      "title": "Minimum price change percent",
+      "type": "number",
+      "description": "Minimum absolute percentage change required to flag a price as changed. Use 0 to flag any change.",
+      "default": 0,
+      "minimum": 0
     },
     "wait_ms": {
       "title": "Wait after load",
