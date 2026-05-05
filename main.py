@@ -288,6 +288,7 @@ class CrawlItem:
 
 
 async def main() -> None:
+    Actor.log.info("RUNNING UPDATED VERSION")
     async with Actor:
         actor_input = await Actor.get_input() or {}
         start_urls = [
