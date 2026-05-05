@@ -308,13 +308,12 @@ async def main() -> None:
         capture_screenshots = bool(actor_input.get("capture_screenshots", True))
         detect_changes = bool(actor_input.get("detect_changes", True))
         wait_ms = int(actor_input.get("wait_ms", 1000) or 0)
-        snapshot_store_name = str(actor_input.get("snapshot_store_name") or "commerce-price-monitor-snapshots")
         product_patterns = list(actor_input.get("product_url_patterns") or [])
         include_patterns = list(actor_input.get("include_patterns") or [])
         exclude_patterns = list(actor_input.get("exclude_patterns") or [])
 
-        snapshot_store = await Actor.open_key_value_store(name=snapshot_store_name)
-        media_store = await Actor.open_key_value_store(name="commerce-price-monitor-media")
+        snapshot_store = await Actor.open_key_value_store()
+        media_store = await Actor.open_key_value_store()
         allowed_hosts = {urlparse(url).netloc.lower() for url in start_urls}
         queue = deque(CrawlItem(url=url, depth=0) for url in start_urls)
         seen: set[str] = set()
