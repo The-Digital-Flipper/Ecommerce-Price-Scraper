@@ -312,8 +312,23 @@ async def main() -> None:
         include_patterns = list(actor_input.get("include_patterns") or [])
         exclude_patterns = list(actor_input.get("exclude_patterns") or [])
 
-        snapshot_store = await Actor.open_key_value_store(name=snapshot_store_name)
-        media_store = await Actor.open_key_value_store(name="commerce-price-monitor-media")
+        try:
+            snapshot_store = await Actor.open_key_value_store(name=snapshot_store_name)
+        except Exception:
+            Actor.log.warning(
+                "Could not open named key-value store '%s' (insufficient permissions?); "
+                "falling back to the default store.",
+                snapshot_store_name,
+            )
+            snapshot_store = await Actor.open_key_value_store()
+        try:
+            media_store = await Actor.open_key_value_store(name="commerce-price-monitor-media")
+        except Exception:
+            Actor.log.warning(
+                "Could not open named key-value store 'commerce-price-monitor-media' "
+                "(insufficient permissions?); falling back to the default store."
+            )
+            media_store = await Actor.open_key_value_store()
         allowed_hosts = {urlparse(url).netloc.lower() for url in start_urls}
         queue = deque(CrawlItem(url=url, depth=0) for url in start_urls)
         seen: set[str] = set()
